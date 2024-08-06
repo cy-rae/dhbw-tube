@@ -1,4 +1,4 @@
 .idea
-/dhbw-tube-frontend/*
-/dhbw-tube-upload/*
-/dhbw-tube-stream/*
+/dhbw-tube-frontend/
+/dhbw-tube-stream/
+/dhbw-tube-upload/
