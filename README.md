@@ -4,4 +4,6 @@ This project contains a command file to clone the DHBW Tube microservices and al
 ### Clone all repositories
 ```bash
 git clone https://github.com/cy-rae/dhbw-tube-frontend.git
+git clone https://github.com/cy-rae/dhbw-tube-upload.git
+git clone https://github.com/cy-rae/dhbw-tube-stream.git
 ```
