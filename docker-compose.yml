@@ -57,6 +57,26 @@ services:
       minio:
         condition: service_healthy
 
+  stream:
+    build:
+      context: ./dhbw-tube-stream
+      dockerfile: Dockerfile
+    ports:
+      # Avoid port conflict by mapping to a different host port
+      - "5001:5000"
+    environment:
+      FLASK_APP: app
+      FLASK_ENV: development
+      MINIO_ENDPOINT: minio:9000
+      MINIO_ACCESS_KEY: minioadmin
+      MINIO_SECRET_KEY: minioadmin
+      SQLALCHEMY_DATABASE_URI: postgresql://postgres:password@postgres:5432/videos
+    depends_on:
+      postgres:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+
 volumes:
   minio_data:
   postgres_data:
