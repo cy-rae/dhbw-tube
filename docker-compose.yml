@@ -1,0 +1,62 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres
+    environment:
+      # Default credentials that should be changed in production
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: videos
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  minio:
+    image: minio/minio
+    command: server /data --console-address ":9001"
+    environment:
+      # Default credentials that should be changed in production
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio_data:/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  upload:
+    build:
+      context: ./dhbw-tube-upload
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    environment:
+      FLASK_APP: app
+      FLASK_ENV: development
+      MINIO_ENDPOINT: minio:9000
+      MINIO_ACCESS_KEY: minioadmin
+      MINIO_SECRET_KEY: minioadmin
+      SQLALCHEMY_DATABASE_URI: postgresql://postgres:password@postgres:5432/videos
+    depends_on:
+      # Wait for the postgres and minio services to be "healthy" before starting the upload web service.
+      # Otherwise, the upload service will fail to start.
+      postgres:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+
+volumes:
+  minio_data:
+  postgres_data:
