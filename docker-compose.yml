@@ -19,29 +19,29 @@ services:
       retries: 5
 
   minio:
-    image: minio/minio
-    command: server /data --console-address ":9001"
+    build:
+      context: ./minio
+      dockerfile: Dockerfile
     environment:
-      # Default credentials that should be changed in production
       MINIO_ROOT_USER: minioadmin
       MINIO_ROOT_PASSWORD: minioadmin
     ports:
-      - "9000:9000"
-      - "9001:9001"
+        - "9000:9000"
+        - "9001:9001"
     volumes:
-      - minio_data:/data
+        - minio_data:/data
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+        test: [ "CMD", "/usr/local/bin/check-health.sh" ]
+        interval: 10s
+        timeout: 5s
+        retries: 5
 
   upload:
     build:
       context: ./dhbw-tube-upload
       dockerfile: Dockerfile
     ports:
-      - "5000:5000"
+      - "5001:5000"
     environment:
       FLASK_APP: app
       FLASK_ENV: development
@@ -63,7 +63,7 @@ services:
       dockerfile: Dockerfile
     ports:
       # Avoid port conflict by mapping to a different host port
-      - "5001:5000"
+      - "5002:5000"
     environment:
       FLASK_APP: app
       FLASK_ENV: development
