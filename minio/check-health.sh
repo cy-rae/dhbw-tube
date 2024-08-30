@@ -6,6 +6,10 @@ then
     echo "curl is not installed. Installing curl..."
     # Install curl
     apt-get update && apt-get install -y curl
+    if [ $? -ne 0 ]; then
+        echo "Failed to install curl. Exiting."
+        exit 1
+    fi
 fi
 
 # Check if MinIO client is installed
