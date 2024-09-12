@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: minio-pvc
+  name: postgres-pvc
   namespace: dhbw-tube
 spec:
   accessModes:
