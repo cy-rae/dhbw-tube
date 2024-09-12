@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: stream
+  namespace: dhbw-tube
+spec:
+  ports:
+  - port: 5002
+    targetPort: 5000
+  selector:
+    app: stream

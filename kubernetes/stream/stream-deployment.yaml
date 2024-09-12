@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stream
+  namespace: dhbw-tube
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: stream
+  template:
+    metadata:
+      labels:
+        app: stream
+    spec:
+      containers:
+      - name: stream
+        image: your-stream-image
+        env:
+        - name: FLASK_APP
+          value: "app"
+        - name: FLASK_ENV
+          value: "development"
+        - name: MINIO_ENDPOINT
+          value: "minio:9000"
+        - name: MINIO_ACCESS_KEY
+          value: "minioadmin"
+        - name: MINIO_SECRET_KEY
+          value: "minioadmin"
+        - name: SQLALCHEMY_DATABASE_URI
+          value: "postgresql://postgres:password@postgres:5432/videos"
+        - name: NO_PROXY
+          value: "localhost,127.0.0.1"
+        ports:
+        - containerPort: 5000
