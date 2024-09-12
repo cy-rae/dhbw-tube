@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: upload
-        image: your-upload-image
+        image: dhbw-tube-upload
         envFrom:
         - configMapRef:
             name: upload-config

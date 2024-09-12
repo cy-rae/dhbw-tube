@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: stream
-        image: your-stream-image
+        image: dhbw-tube-stream
         env:
         - name: FLASK_APP
           value: "app"

@@ -15,6 +15,6 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: your-frontend-image
+        image: dhbw-tube-frontend
         ports:
         - containerPort: 80
