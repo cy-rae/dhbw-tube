@@ -13,6 +13,16 @@ spec:
       labels:
         app: upload
     spec:
+      # Upload depends on postgres and minio. Therefore, we need to wait for them to be ready.
+      initContainers:
+      - name: wait-for-postgres
+        image: busybox
+        command: ['sh', '-c', 'until pg_isready -h postgres -p 5432 -U postgres; do echo waiting for postgres; sleep 5; done;']
+      - name: wait-for-minio
+        image: busybox
+        command: ['sh', '-c', 'until nc -z minio 9000; do echo waiting for minio; sleep 5; done;']
+
+      # Define upload container with liveliness and readiness probes to check if the container is running / healthy.
       containers:
       - name: upload
         image: dhbw-tube-upload
@@ -21,3 +31,15 @@ spec:
             name: upload-config
         ports:
         - containerPort: 5000
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 5000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 5000
+          initialDelaySeconds: 30
+          periodSeconds: 10

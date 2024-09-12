@@ -25,6 +25,6 @@ then
     exit 0
 fi
 
-# If neither curl nor mc is installed, output a message
+# If neither curl nor mc is installed, output a error message
 echo "Neither curl nor Minio-Client are installed on this Minio-Image"
 exit 1

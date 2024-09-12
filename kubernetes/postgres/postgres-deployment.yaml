@@ -19,10 +19,22 @@ spec:
         envFrom:
         - configMapRef:
             name: postgres-config
+        ports:
+        - containerPort: 5432
         volumeMounts:
-        - mountPath: /var/lib/postgresql/data
-          name: postgres-storage
+        - name: postgres-data
+          mountPath: /var/lib/postgresql/data
+        livenessProbe:
+          exec:
+            command: ["pg_isready", "-U", "postgres"]
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          exec:
+            command: ["pg_isready", "-U", "postgres"]
+          initialDelaySeconds: 30
+          periodSeconds: 10
       volumes:
-      - name: postgres-storage
+      - name: postgres-data
         persistentVolumeClaim:
           claimName: postgres-pvc

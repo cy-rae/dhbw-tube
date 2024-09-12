@@ -26,9 +26,19 @@ spec:
         - containerPort: 9000
         - containerPort: 9001
         volumeMounts:
-        - mountPath: /data
-          name: minio-storage
+        - name: minio-data
+          mountPath: /data
+        livenessProbe:
+          exec:
+            command: ["/usr/local/bin/check-health.sh"]
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          exec:
+            command: ["/usr/local/bin/check-health.sh"]
+          initialDelaySeconds: 30
+          periodSeconds: 10
       volumes:
-      - name: minio-storage
+      - name: minio-data
         persistentVolumeClaim:
           claimName: minio-pvc
