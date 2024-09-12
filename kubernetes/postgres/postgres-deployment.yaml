@@ -16,13 +16,9 @@ spec:
       containers:
       - name: postgres
         image: postgres
-        env:
-        - name: POSTGRES_USER
-          value: "postgres"
-        - name: POSTGRES_PASSWORD
-          value: "password"
-        - name: POSTGRES_DB
-          value: "videos"
+        envFrom:
+        - configMapRef:
+            name: postgres-config
         volumeMounts:
         - mountPath: /var/lib/postgresql/data
           name: postgres-storage

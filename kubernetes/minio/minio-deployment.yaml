@@ -15,15 +15,13 @@ spec:
     spec:
       containers:
       - name: minio
-        image: minio/minio
+        image: minio
         args:
         - server
         - /data
-        env:
-        - name: MINIO_ROOT_USER
-          value: "minioadmin"
-        - name: MINIO_ROOT_PASSWORD
-          value: "minioadmin"
+        envFrom:
+        - configMapRef:
+            name: minio-config
         ports:
         - containerPort: 9000
         - containerPort: 9001
