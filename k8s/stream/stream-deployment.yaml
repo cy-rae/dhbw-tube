@@ -1,46 +1,50 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: upload
+  name: stream
   namespace: dhbw-tube
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: upload
+      app: stream
   template:
     metadata:
       labels:
-        app: upload
+        app: stream
     spec:
-      # Upload depends on postgres and minio. Therefore, we need to wait for them to be ready.
+      # Stream depends on postgres and minio. Therefore, we need to wait for them to be ready.
       initContainers:
         - name: wait-for-minio
-          image: alpine:latest
-          command: [ 'sh', '-c', 'apk add --no-cache netcat-openbsd && nc -h && until nc -z minio 9000; do echo waiting for minio; sleep 5; done;' ]
+          image: busybox
+          command: [ 'sh', '-c', 'until nc -z minio 9000; do echo waiting for minio; sleep 5; done;' ]
         - name: wait-for-postgres
           image: postgres:alpine
           command: [ 'sh', '-c', 'until pg_isready -h postgres -p 5432 -U postgres; do echo waiting for postgres; sleep 5; done;' ]
 
-      # Define upload container with liveliness and readiness probes to check if the container is running / healthy.
+      # Define stream container with liveliness and readiness probes to check if the container is running / healthy.
       containers:
-        - name: upload
-          image: dhbw-tube-upload
+        - name: stream
+          image: dhbw-tube-stream
           imagePullPolicy: Never
           envFrom:
             - configMapRef:
-                name: upload-config
+                name: stream-config
           ports:
             - containerPort: 5000
           livenessProbe:
             httpGet:
               path: /health
               port: 5000
-            initialDelaySeconds: 30
+            initialDelaySeconds: 10
             periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 5
           readinessProbe:
             httpGet:
               path: /health
               port: 5000
-            initialDelaySeconds: 30
+            initialDelaySeconds: 10
             periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 5

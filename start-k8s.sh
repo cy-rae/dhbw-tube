@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # Create docker images
+eval $(minikube docker-env)
 docker build -t dhbw-tube-frontend ./dhbw-tube-frontend
 docker build -t dhbw-tube-stream ./dhbw-tube-stream
 docker build -t dhbw-tube-upload ./dhbw-tube-upload
@@ -33,32 +34,32 @@ fi
 kubectl create namespace dhbw-tube
 
 # Apply config maps
-kubectl apply -f kubernetes/postgres/postgres-config-map.yaml
-kubectl apply -f kubernetes/minio/minio-config-map.yaml
-kubectl apply -f kubernetes/upload/upload-config-map.yaml
-kubectl apply -f kubernetes/stream/stream-config-map.yaml
-kubectl apply -f kubernetes/frontend/frontend-config-map.yaml
+kubectl apply -f k8s/postgres/postgres-config-map.yaml
+kubectl apply -f k8s/minio/minio-config-map.yaml
+kubectl apply -f k8s/upload/upload-config-map.yaml
+kubectl apply -f k8s/stream/stream-config-map.yaml
+kubectl apply -f k8s/frontend/frontend-config-map.yaml
 
 # Apply persistent volume claims
-kubectl apply -f kubernetes/postgres/postgres-pvc.yaml
-kubectl apply -f kubernetes/minio/minio-pvc.yaml
+kubectl apply -f k8s/postgres/postgres-pvc.yaml
+kubectl apply -f k8s/minio/minio-pvc.yaml
 
 # Apply deployments
-kubectl apply -f kubernetes/postgres/postgres-deployment.yaml
-kubectl apply -f kubernetes/minio/minio-deployment.yaml
-kubectl apply -f kubernetes/upload/upload-deployment.yaml
-kubectl apply -f kubernetes/stream/stream-deployment.yaml
-kubectl apply -f kubernetes/frontend/frontend-deployment.yaml
+kubectl apply -f k8s/postgres/postgres-deployment.yaml
+kubectl apply -f k8s/minio/minio-deployment.yaml
+kubectl apply -f k8s/upload/upload-deployment.yaml
+kubectl apply -f k8s/stream/stream-deployment.yaml
+kubectl apply -f k8s/frontend/frontend-deployment.yaml
 
 # Apply services
-kubectl apply -f kubernetes/postgres/postgres-service.yaml
-kubectl apply -f kubernetes/minio/minio-service.yaml
-kubectl apply -f kubernetes/upload/upload-service.yaml
-kubectl apply -f kubernetes/stream/stream-service.yaml
-kubectl apply -f kubernetes/frontend/frontend-service.yaml
+kubectl apply -f k8s/postgres/postgres-service.yaml
+kubectl apply -f k8s/minio/minio-service.yaml
+kubectl apply -f k8s/upload/upload-service.yaml
+kubectl apply -f k8s/stream/stream-service.yaml
+kubectl apply -f k8s/frontend/frontend-service.yaml
 
 # Apply Ingress resource
-kubectl apply -f kubernetes/ingress.yaml
+kubectl apply -f k8s/ingress.yaml
 
 # Retrieve the minikube IP
 echo "Minikube IP:"
