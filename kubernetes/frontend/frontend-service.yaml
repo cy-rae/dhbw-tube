@@ -4,8 +4,9 @@ metadata:
   name: frontend
   namespace: dhbw-tube
 spec:
-  ports:
-  - port: 5003
-    targetPort: 80
   selector:
     app: frontend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80

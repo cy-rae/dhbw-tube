@@ -14,6 +14,10 @@ else
   echo "Minikube is already running. Skip start..."
 fi
 
+# Enable the ingress addon in Minikube
+echo "Enabling Ingress addon in Minikube..."
+minikube addons enable ingress
+
 # Delete existing namespace if it exists
 if kubectl get namespace dhbw-tube &>/dev/null; then
   echo "Deleting existing dhbw-tube namespace..."
@@ -35,6 +39,10 @@ kubectl apply -f kubernetes/upload/upload-config-map.yaml
 kubectl apply -f kubernetes/stream/stream-config-map.yaml
 kubectl apply -f kubernetes/frontend/frontend-config-map.yaml
 
+# Apply persistent volume claims
+kubectl apply -f kubernetes/postgres/postgres-pvc.yaml
+kubectl apply -f kubernetes/minio/minio-pvc.yaml
+
 # Apply deployments
 kubectl apply -f kubernetes/postgres/postgres-deployment.yaml
 kubectl apply -f kubernetes/minio/minio-deployment.yaml
@@ -48,3 +56,10 @@ kubectl apply -f kubernetes/minio/minio-service.yaml
 kubectl apply -f kubernetes/upload/upload-service.yaml
 kubectl apply -f kubernetes/stream/stream-service.yaml
 kubectl apply -f kubernetes/frontend/frontend-service.yaml
+
+# Apply Ingress resource
+kubectl apply -f kubernetes/ingress.yaml
+
+# Retrieve the minikube IP
+echo "Minikube IP:"
+minikube ip
