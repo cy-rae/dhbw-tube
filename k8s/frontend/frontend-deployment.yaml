@@ -17,14 +17,17 @@ spec:
       initContainers:
         - name: wait-for-upload
           image: busybox
-          command: [ 'sh', '-c', 'until nc -z upload 5001; do echo waiting for upload; sleep 5; done;' ]
+          command: [ 'sh', '-c', 'until nc -z upload-service 5001; do echo waiting for upload; sleep 5; done;' ]
         - name: wait-for-stream
           image: busybox
-          command: [ 'sh', '-c', 'until nc -z stream 5002; do echo waiting for stream; sleep 5; done;' ]
+          command: [ 'sh', '-c', 'until nc -z stream-service 5002; do echo waiting for stream; sleep 5; done;' ]
 
       containers:
         - name: frontend
           image: dhbw-tube-frontend
           imagePullPolicy: Never
+          envFrom:
+            - configMapRef:
+                name: frontend-config-map
           ports:
             - containerPort: 80

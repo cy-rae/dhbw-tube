@@ -64,7 +64,14 @@ kubectl apply -f k8s/frontend/frontend-service.yaml
 kubectl apply -f k8s/ingress.yaml
 
 # Retrieve the minikube IP
-Write-Host "DHBW-Tube runs on: http://localhost:80/"
+Write-Host "DHBW-Tube runs on: http://localhost/"
 
-# Tunnel minikube to localhost
-minikube tunnel
+# Check if a Minikube tunnel is already running. If not, start it.
+$tunnelRunning = Get-Process -Name "minikube" -ErrorAction SilentlyContinue | Where-Object { $_.Path -match "minikube tunnel" }
+
+if ($tunnelRunning) {
+    Write-Output "Minikube tunnel is already running..."
+} else {
+    Write-Output "Starting Minikube tunnel..."
+    minikube tunnel
+}

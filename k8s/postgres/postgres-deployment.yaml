@@ -32,14 +32,14 @@ spec:
           livenessProbe:
             exec:
               command: [ "pg_isready", "-U", "postgres" ]
-            initialDelaySeconds: 30
+            initialDelaySeconds: 20
             periodSeconds: 10
             timeoutSeconds: 5
             failureThreshold: 10
           readinessProbe:
             exec:
               command: [ "pg_isready", "-U", "postgres" ]
-            initialDelaySeconds: 30
+            initialDelaySeconds: 20
             periodSeconds: 10
             timeoutSeconds: 5
             failureThreshold: 10

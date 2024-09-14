@@ -4,10 +4,11 @@ metadata:
   name: upload-config-map
   namespace: dhbw-tube
 data:
+  FRONTEND_BASE_URL: "http://frontend-service.dhbw-tube.svc.cluster.local"
   FLASK_APP: "app"
   FLASK_ENV: "development"
-  MINIO_ENDPOINT: "minio:9000"
+  MINIO_ENDPOINT: "minio-service:9000"
   MINIO_ACCESS_KEY: "minioadmin"
   MINIO_SECRET_KEY: "minioadmin"
-  SQLALCHEMY_DATABASE_URI: "postgresql://postgres:password@postgres:5432/videos"
+  SQLALCHEMY_DATABASE_URI: "postgresql://postgres:password@postgres-service/videos"
   # NO_PROXY: "localhost,127.0.0.1" Todo: uncomment this line if you are working on bosch device

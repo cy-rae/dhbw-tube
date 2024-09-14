@@ -62,7 +62,13 @@ kubectl apply -f k8s/frontend/frontend-service.yaml
 kubectl apply -f k8s/ingress.yaml
 
 # Retrieve the minikube IP
-echo "DHBW-Tube runs on: http://localhost:80/"
+echo "DHBW-Tube runs on: http://localhost/"
+#!/bin/bash
 
-# Tunnel minikube to localhost
-minikube tunnel
+# Check if a Minikube tunnel is already running. If not start it.
+if pgrep -f "minikube tunnel" &>/dev/null; then
+  echo "Minikube tunnel is already running..."
+else
+  echo "Starting Minikube tunnel..."
+  minikube tunnel
+fi

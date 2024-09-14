@@ -17,10 +17,10 @@ spec:
       initContainers:
         - name: wait-for-minio
           image: busybox
-          command: [ 'sh', '-c', 'until nc -z minio 9000; do echo waiting for minio; sleep 5; done;' ]
+          command: [ 'sh', '-c', 'until nc -z minio-service 9000; do echo waiting for minio; sleep 5; done;' ]
         - name: wait-for-postgres
           image: postgres:alpine
-          command: [ 'sh', '-c', 'until pg_isready -h postgres -p 5432 -U postgres; do echo waiting for postgres; sleep 5; done;' ]
+          command: [ 'sh', '-c', 'until pg_isready -h postgres-service -p 5432 -U postgres; do echo waiting for postgres; sleep 5; done;' ]
 
       containers:
         - name: stream
