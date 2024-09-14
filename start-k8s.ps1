@@ -1,36 +1,39 @@
-# Start minikube if it is not already running
-$minikubeStatus = minikube status
-if ($minikubeStatus -like "*Running*") {
-    Write-Output "Minikube is already running. Skip start..."
-} else {
-    Write-Output "Start minikube..."
+# Check if Minikube is running
+$minikubeStatus = minikube status --format='{{.Host}}' 2>$null
+if ($minikubeStatus -ne "Running") {
+    Write-Host "Starting Minikube..."
     minikube start
+} else {
+    Write-Host "Minikube is already running. Skipping start..."
 }
 
-# Delete existing namespace if it exists
-if (kubectl get namespace dhbw-tube -ErrorAction SilentlyContinue) {
-    Write-Output "Deleting existing dhbw-tube namespace..."
+# Delete existing namespace if it exists to ensure a clean environment
+$namespaceExists = kubectl get namespace dhbw-tube 2>$null
+if ($namespaceExists) {
+    Write-Host "Deleting existing dhbw-tube namespace..."
     kubectl delete namespace dhbw-tube
+
     # Wait for the namespace to be completely deleted
-    while (kubectl get namespace dhbw-tube -ErrorAction SilentlyContinue) {
-        Write-Output "Waiting for dhbw-tube namespace to be deleted..."
+    do {
+        Write-Host "Waiting for dhbw-tube namespace to be deleted..."
         Start-Sleep -Seconds 2
-    }
+        $namespaceExists = kubectl get namespace dhbw-tube 2>$null
+    } while ($namespaceExists)
 }
 
 # Enable the ingress addon in Minikube
-Write-Output "Enabling Ingress addon in Minikube..."
+Write-Host "Enabling Ingress addon in Minikube..."
 minikube addons enable ingress
 
 # Create docker images
-& minikube -p minikube docker-env | Invoke-Expression
+& minikube docker-env | Invoke-Expression
 docker build -t dhbw-tube-frontend ./dhbw-tube-frontend
 docker build -t dhbw-tube-stream ./dhbw-tube-stream
 docker build -t dhbw-tube-upload ./dhbw-tube-upload
 docker build -t minio ./minio
 
-# Create namespace for dhbw-tube cluster
-kubectl create namespace dhbw-tube
+# Create namespace to isolate dhbw-tube application
+kubectl apply -f k8s/namespace.yaml
 
 # Apply config maps
 kubectl apply -f k8s/postgres/postgres-config-map.yaml
@@ -61,5 +64,7 @@ kubectl apply -f k8s/frontend/frontend-service.yaml
 kubectl apply -f k8s/ingress.yaml
 
 # Retrieve the minikube IP
-Write-Output "Minikube IP:"
-minikube ip
+Write-Host "DHBW-Tube runs on: http://localhost:80/"
+
+# Tunnel minikube to localhost
+minikube tunnel
