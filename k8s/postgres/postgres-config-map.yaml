@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: postgres-config
+  name: postgres-config-map
   namespace: dhbw-tube
 data:
   POSTGRES_USER: "postgres"

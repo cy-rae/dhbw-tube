@@ -1,17 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: minio
+  name: minio-deployment
   namespace: dhbw-tube
 spec:
   replicas: 1
+
   selector:
     matchLabels:
-      app: minio
+      app: minio-app
+
   template:
     metadata:
       labels:
-        app: minio
+        app: minio-app
+
     spec:
       containers:
         - name: minio
@@ -22,13 +25,15 @@ spec:
             - /data
           envFrom:
             - configMapRef:
-                name: minio-config
+                name: minio-config-map
           ports:
             - containerPort: 9000
             - containerPort: 9001
           volumeMounts:
             - name: minio-data
               mountPath: /data
+
+          # Define liveness and readiness probes so services that depend on the database can check if the database is ready.
           livenessProbe:
             exec:
               command: [ "/usr/local/bin/check-health.sh" ]
@@ -43,6 +48,7 @@ spec:
             periodSeconds: 10
             timeoutSeconds: 5
             failureThreshold: 10
+
       volumes:
         - name: minio-data
           persistentVolumeClaim:

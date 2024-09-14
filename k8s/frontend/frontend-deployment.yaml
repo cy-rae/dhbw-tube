@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: frontend
+  name: frontend-deployment
   namespace: dhbw-tube
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: frontend
+      app: frontend-app
   template:
     metadata:
       labels:
-        app: frontend
+        app: frontend-app
     spec:
-      # Frontend depends on upload and stream. Therefore, we need to wait for them to be ready.
+      # Frontend depends on upload and stream. Therefore, we need to wait for them to be ready using init containers.
       initContainers:
         - name: wait-for-upload
           image: busybox
@@ -22,7 +22,6 @@ spec:
           image: busybox
           command: [ 'sh', '-c', 'until nc -z stream 5002; do echo waiting for stream; sleep 5; done;' ]
 
-      # Define frontend container.
       containers:
         - name: frontend
           image: dhbw-tube-frontend

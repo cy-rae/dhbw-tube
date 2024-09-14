@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: memcached-deployment
+  namespace: dhbw-tube
+  labels:
+    app: memcached
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: memcached-app
+  template:
+    metadata:
+      labels:
+        app: memcached-app
+    spec:
+      containers:
+        - name: memcached
+          image: memcached:1.6.9
+          ports:
+            - containerPort: 11211
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+            limits:
+              memory: "256Mi"
+              cpu: "500m"

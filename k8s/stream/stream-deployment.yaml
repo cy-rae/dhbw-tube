@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: stream
+  name: stream-deployment
   namespace: dhbw-tube
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: stream
+      app: stream-app
   template:
     metadata:
       labels:
-        app: stream
+        app: stream-app
     spec:
-      # Stream depends on postgres and minio. Therefore, we need to wait for them to be ready.
+      # Stream depends on postgres and minio. Therefore, we need to wait for them to be ready using init containers.
       initContainers:
         - name: wait-for-minio
           image: busybox
@@ -22,16 +22,17 @@ spec:
           image: postgres:alpine
           command: [ 'sh', '-c', 'until pg_isready -h postgres -p 5432 -U postgres; do echo waiting for postgres; sleep 5; done;' ]
 
-      # Define stream container with liveliness and readiness probes to check if the container is running / healthy.
       containers:
         - name: stream
           image: dhbw-tube-stream
           imagePullPolicy: Never
           envFrom:
             - configMapRef:
-                name: stream-config
+                name: stream-config-map
           ports:
             - containerPort: 5000
+
+          # Define liveness and readiness probes so services that depend on the service can check if stream is ready.
           livenessProbe:
             httpGet:
               path: /health

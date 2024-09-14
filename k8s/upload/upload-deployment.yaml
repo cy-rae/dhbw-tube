@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: upload
+  name: upload-deployment
   namespace: dhbw-tube
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: upload
+      app: upload-app
   template:
     metadata:
       labels:
-        app: upload
+        app: upload-app
     spec:
-      # Upload depends on postgres and minio. Therefore, we need to wait for them to be ready.
+      # Upload depends on postgres and minio. Therefore, we need to wait for them to be ready using init containers.
       initContainers:
         - name: wait-for-minio
           image: busybox
@@ -22,16 +22,17 @@ spec:
           image: postgres:alpine
           command: [ 'sh', '-c', 'until pg_isready -h postgres -p 5432 -U postgres; do echo waiting for postgres; sleep 5; done;' ]
 
-      # Define upload container with liveliness and readiness probes to check if the container is running / healthy.
       containers:
         - name: upload
           image: dhbw-tube-upload
           imagePullPolicy: Never
           envFrom:
             - configMapRef:
-                name: upload-config
+                name: upload-config-map
           ports:
             - containerPort: 5000
+
+          # Define liveness and readiness probes so services that depend on the service can check if upload is ready.
           livenessProbe:
             httpGet:
               path: /health

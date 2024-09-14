@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: minio-config
+  name: minio-config-map
   namespace: dhbw-tube
 data:
   MINIO_ROOT_USER: "minioadmin"
