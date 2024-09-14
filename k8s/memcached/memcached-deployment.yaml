@@ -4,7 +4,7 @@ metadata:
   name: memcached-deployment
   namespace: dhbw-tube
   labels:
-    app: memcached
+    app: memcached-app
 spec:
   replicas: 1
   selector:
@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: memcached
-          image: memcached:1.6.9
+          image: memcached:alpine
           ports:
             - containerPort: 11211
           resources:

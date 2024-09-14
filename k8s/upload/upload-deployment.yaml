@@ -32,7 +32,7 @@ spec:
           ports:
             - containerPort: 5000
 
-          # Define liveness and readiness probes so services that depend on the service can check if upload is ready.
+          # Define liveness and readiness probes so frontend can check if upload is ready.
           livenessProbe:
             httpGet:
               path: /health

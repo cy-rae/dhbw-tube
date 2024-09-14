@@ -33,7 +33,7 @@ spec:
             - name: minio-data
               mountPath: /data
 
-          # Define liveness and readiness probes so services that depend on the database can check if the database is ready.
+          # Define liveness and readiness probes so upload and stream can check if upload is ready.
           livenessProbe:
             exec:
               command: [ "/usr/local/bin/check-health.sh" ]

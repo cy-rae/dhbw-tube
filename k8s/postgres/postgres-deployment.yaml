@@ -28,7 +28,7 @@ spec:
             - name: postgres-data
               mountPath: /var/lib/postgresql/data
 
-          # Define liveness and readiness probes so services that depend on the database can check if the database is ready.
+          # Define liveness and readiness probes so upload and stream can check if upload is ready.
           livenessProbe:
             exec:
               command: [ "pg_isready", "-U", "postgres" ]
