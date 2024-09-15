@@ -16,3 +16,17 @@ spec:
                 name: frontend-service
                 port:
                   number: 80
+          - path: /upload-api
+            pathType: Prefix
+            backend:
+              service:
+                name: upload-service
+                port:
+                  number: 5000
+          - path: /stream-api
+            pathType: Prefix
+            backend:
+              service:
+                name: stream-service
+                port:
+                  number: 5000

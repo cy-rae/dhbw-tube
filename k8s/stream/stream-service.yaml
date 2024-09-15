@@ -4,8 +4,9 @@ metadata:
   name: stream-service
   namespace: dhbw-tube
 spec:
-  ports:
-    - port: 5002
-      targetPort: 5000
   selector:
     app: stream-app
+  ports:
+    - protocol: TCP
+      port: 5000
+      targetPort: 5000

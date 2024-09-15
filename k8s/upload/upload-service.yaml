@@ -4,8 +4,9 @@ metadata:
   name: upload-service
   namespace: dhbw-tube
 spec:
-  ports:
-    - port: 5001
-      targetPort: 5000
   selector:
     app: upload-app
+  ports:
+    - protocol: TCP
+      port: 5000
+      targetPort: 5000

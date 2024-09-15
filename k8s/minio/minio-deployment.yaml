@@ -5,16 +5,13 @@ metadata:
   namespace: dhbw-tube
 spec:
   replicas: 1
-
   selector:
     matchLabels:
       app: minio-app
-
   template:
     metadata:
       labels:
         app: minio-app
-
     spec:
       containers:
         - name: minio
