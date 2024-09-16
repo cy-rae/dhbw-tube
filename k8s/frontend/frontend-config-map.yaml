@@ -15,7 +15,7 @@ data:
         }
 
         location /upload-api/ {
-            client_max_body_size 20M;
+            client_max_body_size 7G;
             proxy_pass http://upload-service:5000/;  # Set the correct URL for production
             proxy_set_header Host $host;
             add_header Access-Control-Allow-Origin *;

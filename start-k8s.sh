@@ -43,6 +43,7 @@ kubectl apply -f k8s/minio/minio-pvc.yaml
 # Apply deployments
 kubectl apply -f k8s/postgres/postgres-deployment.yaml
 kubectl apply -f k8s/minio/minio-deployment.yaml
+kubectl apply -f k8s/memcached/memcached-deployment.yaml
 kubectl apply -f k8s/upload/upload-deployment.yaml
 kubectl apply -f k8s/stream/stream-deployment.yaml
 kubectl apply -f k8s/frontend/frontend-deployment.yaml
@@ -50,6 +51,7 @@ kubectl apply -f k8s/frontend/frontend-deployment.yaml
 # Apply services
 kubectl apply -f k8s/postgres/postgres-service.yaml
 kubectl apply -f k8s/minio/minio-service.yaml
+kubectl apply -f k8s/memcached/memcached-service.yaml
 kubectl apply -f k8s/upload/upload-service.yaml
 kubectl apply -f k8s/stream/stream-service.yaml
 kubectl apply -f k8s/frontend/frontend-service.yaml

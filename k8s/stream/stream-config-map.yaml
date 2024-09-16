@@ -11,4 +11,6 @@ data:
   MINIO_ACCESS_KEY: "minioadmin"
   MINIO_SECRET_KEY: "minioadmin"
   SQLALCHEMY_DATABASE_URI: "postgresql://postgres:password@postgres-service/videos"
+  MEMCACHED_HOST: "memcached-service"
+  MEMCACHED_PORT: "11211"
   # NO_PROXY: "localhost,127.0.0.1" Todo: uncomment this line if you are working on bosch device

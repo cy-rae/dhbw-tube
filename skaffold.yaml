@@ -1,0 +1,46 @@
+apiVersion: skaffold/v2beta26
+kind: Config
+metadata:
+  name: dhbw-tube
+build:
+  artifacts:
+    - image: dhbw-tube-frontend
+      context: dhbw-tube-frontend
+      docker:
+        dockerfile: Dockerfile
+    - image: dhbw-tube-stream
+      context: dhbw-tube-stream
+      docker:
+        dockerfile: Dockerfile
+    - image: dhbw-tube-upload
+      context: dhbw-tube-upload
+      docker:
+        dockerfile: Dockerfile
+    - image: minio
+      context: minio
+      docker:
+        dockerfile: Dockerfile
+manifests:
+  rawYaml:
+    - k8s/namespace.yaml
+    - k8s/postgres/postgres-config-map.yaml
+    - k8s/minio/minio-config-map.yaml
+    - k8s/upload/upload-config-map.yaml
+    - k8s/stream/stream-config-map.yaml
+    - k8s/frontend/frontend-config-map.yaml
+    - k8s/postgres/postgres-pvc.yaml
+    - k8s/minio/minio-pvc.yaml
+    - k8s/postgres/postgres-deployment.yaml
+    - k8s/minio/minio-deployment.yaml
+    - k8s/memcached/memcached-deployment.yaml
+    - k8s/upload/upload-deployment.yaml
+    - k8s/stream/stream-deployment.yaml
+    - k8s/frontend/frontend-deployment.yaml
+    - k8s/postgres/postgres-service.yaml
+    - k8s/minio/minio-service.yaml
+    - k8s/memcached/memcached-service.yaml
+    - k8s/upload/upload-service.yaml
+    - k8s/stream/stream-service.yaml
+    - k8s/frontend/frontend-service.yaml
+deploy:
+  kubectl: {}
