@@ -25,7 +25,6 @@ spec:
       containers:
         - name: upload
           image: dhbw-tube-upload
-          imagePullPolicy: Never
           envFrom:
             - configMapRef:
                 name: upload-config-map

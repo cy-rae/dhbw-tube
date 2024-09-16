@@ -25,7 +25,6 @@ spec:
       containers:
         - name: stream
           image: dhbw-tube-stream
-          imagePullPolicy: Never
           envFrom:
             - configMapRef:
                 name: stream-config-map

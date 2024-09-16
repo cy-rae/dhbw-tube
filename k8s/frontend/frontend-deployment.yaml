@@ -25,7 +25,6 @@ spec:
       containers:
         - name: frontend
           image: dhbw-tube-frontend
-          imagePullPolicy: Never
           ports:
             - containerPort: 80
           volumeMounts:

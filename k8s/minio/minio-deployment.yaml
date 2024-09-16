@@ -16,7 +16,6 @@ spec:
       containers:
         - name: minio
           image: minio
-          imagePullPolicy: Never
           args:
             - server
             - /data
