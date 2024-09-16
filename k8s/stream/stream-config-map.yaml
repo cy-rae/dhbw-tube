@@ -4,7 +4,7 @@ metadata:
   name: stream-config-map
   namespace: dhbw-tube
 data:
-  FRONTEND_BASE_URL: "http://frontend-service.dhbw-tube.svc.cluster.local"
+  FRONTEND_BASE_URL: "http://frontend-service"
   FLASK_APP: "app"
   FLASK_ENV: "development"
   MINIO_ENDPOINT: "minio-service:9000"

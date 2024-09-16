@@ -19,10 +19,6 @@ if kubectl get namespace dhbw-tube &>/dev/null; then
   done
 fi
 
-# Enable the ingress addon in Minikube
-#echo "Enabling Ingress addon in Minikube..."
-#minikube addons enable ingress
-
 # Create docker images
 eval $(minikube docker-env)
 docker build -t dhbw-tube-frontend ./dhbw-tube-frontend
@@ -58,12 +54,9 @@ kubectl apply -f k8s/upload/upload-service.yaml
 kubectl apply -f k8s/stream/stream-service.yaml
 kubectl apply -f k8s/frontend/frontend-service.yaml
 
-# Apply Ingress resource
-kubectl apply -f k8s/ingress.yaml
-
 # Print the URL to access the application
 echo "DHBW-Tube runs on: http://localhost/"
-#!/bin/bash
+!/bin/bash
 
 # Check if a Minikube tunnel is already running. If not start it.
 if pgrep -f "minikube tunnel" &>/dev/null; then

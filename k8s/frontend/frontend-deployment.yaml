@@ -28,11 +28,11 @@ spec:
           imagePullPolicy: Never
           ports:
             - containerPort: 80
-#          volumeMounts:
-#            - name: nginx-config
-#              mountPath: /etc/nginx/conf.d/nginx.conf
-#              subPath: nginx.conf
-#      volumes:
-#        - name: nginx-config
-#          configMap:
-#            name: frontend-config-map
+          volumeMounts:
+            - name: nginx-config-volume
+              mountPath: /etc/nginx/conf.d/default.conf
+              subPath: default.conf
+      volumes:
+        - name: nginx-config-volume
+          configMap:
+            name: frontend-config-map

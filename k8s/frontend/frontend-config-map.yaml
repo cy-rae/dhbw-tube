@@ -4,38 +4,30 @@ metadata:
   name: frontend-config-map
   namespace: dhbw-tube
 data:
-  nginx.conf: |
+  default.conf: |
     server {
         listen 80;
-    
-        root /usr/share/nginx/html;
-        index index.html;
-    
-        # Host static files
+
         location / {
+            root /usr/share/nginx/html;
+            index index.html index.htm;
             try_files $uri $uri/ /index.html;
         }
-    
-        # proxy configuration for the upload service
-        location /upload-api {
-            proxy_pass http://localhost/upload-api;
+
+        location /upload-api/ {
+            client_max_body_size 20M;
+            proxy_pass http://upload-service:5000/;  # Set the correct URL for production
             proxy_set_header Host $host;
-            proxy_set_header X-Real-IP $remote_addr;
-            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-            proxy_set_header X-Forwarded-Proto $scheme;
-        }
-    
-        # proxy configuration for the stream service
-        location /stream-api {
-            proxy_pass http://localhost/stream-api;
-            proxy_set_header Host $host;
-            proxy_set_header X-Real-IP $remote_addr;
-            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-            proxy_set_header X-Forwarded-Proto $scheme;
+            add_header Access-Control-Allow-Origin *;
+            add_header Access-Control-Allow-Methods 'GET, POST, OPTIONS';
+            add_header Access-Control-Allow-Headers 'Content-Type, Authorization';
         }
 
-        location ~* \.(jpg|jpeg|png|gif|ico|css|js)$ {
-            expires 1y;
-            log_not_found off;
+        location /stream-api/ {
+            proxy_pass http://stream-service:5000/;  # Set the correct URL for production
+            proxy_set_header Host $host;
+            add_header Access-Control-Allow-Origin *;
+            add_header Access-Control-Allow-Methods 'GET, POST, OPTIONS';
+            add_header Access-Control-Allow-Headers 'Content-Type, Authorization';
         }
     }

@@ -6,6 +6,7 @@ metadata:
 spec:
   selector:
     app: upload-app
+  type: LoadBalancer
   ports:
     - protocol: TCP
       port: 5000
