@@ -12,9 +12,16 @@ spec:
     metadata:
       labels:
         app: stream-app
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/path: /metrics
+        prometheus.io/port: "5002"
     spec:
       # Stream depends on postgres and minio. Therefore, we need to wait for them to be ready using init containers.
       initContainers:
+        - name: wait-for-memcached
+          image: busybox
+          command: [ 'sh', '-c', 'until nc -z memcached-service 11211; do echo waiting for memcached; sleep 5; done;' ]
         - name: wait-for-minio
           image: busybox
           command: [ 'sh', '-c', 'until nc -z minio-service 9000; do echo waiting for minio; sleep 5; done;' ]

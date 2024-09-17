@@ -5,16 +5,17 @@ metadata:
   namespace: dhbw-tube
 spec:
   replicas: 1
-
   selector:
     matchLabels:
       app: postgres-app
-
   template:
     metadata:
       labels:
         app: postgres-app
-
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/path: /metrics
+        prometheus.io/port: "5432"
     spec:
       containers:
         - name: postgres
