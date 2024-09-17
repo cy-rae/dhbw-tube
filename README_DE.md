@@ -74,7 +74,7 @@ Diese Befehle führen jeweils ein Skript aus, das die Einrichtung einer Kubernet
 Sobald alle Ressourcen erfolgreich bereitgestellt wurden, kann die Anwendung über [localhost](http://localhost) aufgerufen werden.
 
 Um sicherzustellen, dass alle Ressourcen vollständig bereitgestellt sind, können Sie den Status der Ressourcen mit dem folgenden Befehl überprüfen:
-```bash
+```
 kubectl get all -n dhbw-tube
 ```
 

@@ -39,4 +39,4 @@ fi
 
 # Create kubernetes environment with skaffold script
 echo "Creating kubernetes environment with skaffold..."
-skaffold run -f skaffold.yaml
+skaffold dev -f skaffold.yaml

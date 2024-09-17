@@ -73,7 +73,7 @@ These commands each execute a script that automates the setup of a Kubernetes en
 As soon as all resources have been successfully deployed, the application can be accessed via [localhost](http://localhost).
 
 To ensure that all resources are fully deployed, you can check the status of the resources with the following command:
-```bash
+```
 kubectl get all -n dhbw-tube
 ```
 
@@ -95,11 +95,11 @@ You can then access Prometheus at [localhost:8888](http://localhost:8888) and Gr
 ## Starting the Application in Development Mode
 To start the application in development mode, open Docker Desktop and make sure the Docker Engine is running. 
 Then, execute one of the following commands:
-#### Unter MacOS / Linux:
+#### On MacOS / Linux:
 ```bash
 bash run-dhbw-tube-dev.sh
 ```
-#### Unter Windows:
+#### On Windows:
 ```shell
 powershell -File run-k8s-dev.ps1
 ```
