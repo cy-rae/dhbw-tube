@@ -1,11 +1,11 @@
 # DHBW Tube
 
 ## Anwendungsbeschreibung
-DHBW-Tube ist eine standortübergreifende Web-Videoplattform zum Austausch von nutzergenerierten Inhalten für Studierende und Mitarbeiter der Dualen Hochschule Baden-Württemberg.
+DHBW-Tube ist eine standortübergreifende Web-Videoplattform zum Austausch von Nutzer-generierten Inhalten für Studierende und Mitarbeiter der Dualen Hochschule Baden-Württemberg.
 Nutzer können auf dem Portal kostenlos Videoclips suchen, ansehen und hochladen.
 Dozenten können zum Beispiel Vorlesungsaufzeichnungen hochladen, die dann von Studierenden, die krankheitsbedingt abwesend sind oder zur Prüfungsvorbereitung wiederholt werden, angesehen werden können.
 Auf der anderen Seite haben Studierende die Möglichkeit, eigene Lernvideos zu Vorlesungsinhalten aufzunehmen und mit ihren Kommilitonen zu teilen.
-So können auch Studierende verschiedener Fachrichtungen und DHBW-Standorte ihr Wissen campusübergreifend austauschen.
+So können auch Studierende verschiedener Fachrichtungen und DHBW-Standorte ihr Wissen campus übergreifend austauschen.
 Die Videos können werbefrei von verschiedenen Geräten über den Webbrowser auf der dezentralen Plattform gestreamt werden und bleiben auch für nachfolgende Semester erhalten.
 Die Anwendung wurde mit dem Ziel der Datenminimierung entwickelt und erfordert keine aufwändige Registrierung zum Hochladen von Inhalten.
 
@@ -17,7 +17,7 @@ Die DHBW-Tube Anwendung besteht aus den drei folgenden Microservices, die in ein
 - Stream: Der Streaming-Service, der das Streamen von Videos und Aufrufen von Metadaten ermöglicht.
 - Upload: Der Upload-Service, der das Hochladen von Videos ermöglicht.
 
-Dieses Respository enthält die Kubernetes-Ressourcen, die für die Bereitstellung der Anwendung in einer Kubernetes-Umgebung erforderlich sind.
+Dieses Repository enthält die Kubernetes-Ressourcen, die für die Bereitstellung der Anwendung in einer Kubernetes-Umgebung erforderlich sind.
 
 Der Quellcode der Microservices hingegen ist in drei Repositories aufgeteilt, wodurch die Microservices unabhängig voneinander entwickelt werden können.
 Um die Kubernetes-Umgebung aufzusetzen, sollten demnach die drei Repositories geklont werden. Mit den folgenden Befehlen können die Repositories geklont werden: 
@@ -108,7 +108,7 @@ powershell -File run-k8s-dev.ps1
 <p style="margin-top: 40px"></p>
 
 Diese Befehle führen jeweils ein Skript aus, das die Einrichtung einer Kubernetes-Umgebung unter Verwendung von Minikube, Helm und Skaffold automatisiert. Folgende Schritte werden durchgeführt:
-2. **Minikube starten**:
+1. **Minikube starten**:
 Das Skript überprüft, ob Minikube bereits läuft. Falls Minikube nicht ausgeführt wird, wird es gestartet.
 2. **Namespace löschen**:
 Falls der Namespace **dhbw-tube** bereits existiert, wird er gelöscht, um eine saubere Umgebung zu gewährleisten. Das Skript wartet, bis der Namespace vollständig entfernt ist, bevor es fortfährt.
