@@ -31,7 +31,7 @@ In this README file, you will find instructions on how to start the application 
 To start the application, execute the following command:
 #### Under MacOS / Linux:
 ```bash
-bash start-k8s.sh
+bash run-dhbw-tube.sh
 ```
 
 #### Under Windows:
