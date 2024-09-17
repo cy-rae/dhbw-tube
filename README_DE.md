@@ -61,4 +61,12 @@ kubectl get all -n dhbw-tube
 kubectl get ingress -n dhbw-tube
 ```
 
+Prometheus und Grafana portforwards:
+```bash
+kubectl port-forward svc/prometheus-server 8888:80 -n dhbw-tube
+```
+```bash
+kubectl port-forward svc/grafana 9999:80 -n dhbw-tube
+```
+
 ## Kubernetes Umgebung

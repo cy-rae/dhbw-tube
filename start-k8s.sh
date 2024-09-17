@@ -19,6 +19,10 @@ if kubectl get namespace dhbw-tube &>/dev/null; then
   done
 fi
 
+# Create kubernetes environment with skaffold script
+echo "Creating kubernetes environment with skaffold..."
+skaffold run -f skaffold.yaml
+
 # Check if prometheus is added to the helm repositories. If not add it.
 if helm repo list | grep -q "prometheus-community"; then
   echo "Prometheus helm repository is already added..."
@@ -37,20 +41,24 @@ else
   helm repo update
 fi
 
-# Create kubernetes environment
-skaffold dev
+# Install prometheus and grafana
+echo "Installing prometheus and grafana..."
+helm install prometheus prometheus-community/prometheus \
+  --namespace dhbw-tube \
+  --set server.global.scrape_interval="15s"
+helm install grafana grafana/grafana \
+  --namespace dhbw-tube \
+  --set adminPassword="admin"
 
-# Install prometheus and grafana in dhbw-tube namespace with specific ports
-helm install prometheus prometheus-community/prometheus --namespace dhbw-tube --set server.service.port=8888
-helm install grafana grafana/grafana --namespace dhbw-tube --set service.nodePort=9999 --set adminPassword=admin
-
-# Print the URL to access the application
+# Print the URL to access the application, prometheus and grafana
+echo ""
 echo "DHBW-Tube runs on: http://localhost/"
+echo ""
+echo "To access prometheus and grafana create a port-forward with the following commands:"
+echo "kubectl port-forward svc/prometheus-server 8888:80 -n dhbw-tube"
+echo "kubectl port-forward svc/grafana 9999:80 -n dhbw-tube"
+echo ""
 
-# Check if a Minikube tunnel is already running. If not start it.
-if pgrep -f "minikube tunnel" &>/dev/null; then
-  echo "Minikube tunnel is already running..."
-else
-  echo "Starting Minikube tunnel..."
-  minikube tunnel
-fi
+# Start minikube tunnel
+echo "Starting Minikube tunnel..."
+minikube tunnel
