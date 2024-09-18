@@ -153,4 +153,4 @@ You can then access Prometheus at [localhost:8888](http://localhost:8888) and Gr
 
 <br>
 
-## Kubernetes Umgebung
+## Kubernetes environment:
