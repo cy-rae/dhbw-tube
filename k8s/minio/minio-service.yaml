@@ -4,6 +4,7 @@ metadata:
   name: minio-service
   namespace: dhbw-tube
 spec:
+  clusterIP: None
   selector:
     app: minio-app
   ports:

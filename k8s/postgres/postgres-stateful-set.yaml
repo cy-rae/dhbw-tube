@@ -1,9 +1,10 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
-  name: postgres-deployment
+  name: postgres-stateful-set
   namespace: dhbw-tube
 spec:
+  serviceName: postgres-service
   replicas: 1
   selector:
     matchLabels:

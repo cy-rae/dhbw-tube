@@ -26,20 +26,30 @@ deploy:
       # Apply namespace
       - k8s/namespace.yaml
 
+      # Apply secrets
+      - k8s/secrets/postgres-secret.yaml
+      - k8s/secrets/minio-secret.yaml
+      - k8s/secrets/grafana-secret.yaml
+
       # Apply persistent volume claims
       - k8s/postgres/postgres-pvc.yaml
       - k8s/minio/minio-pvc.yaml
+      - k8s/prometheus/prometheus-pv.yaml
+      - k8s/prometheus/prometheus-pvc.yaml
+      - k8s/grafana/grafana-pv.yaml
+      - k8s/grafana/grafana-pvc.yaml
 
       # Apply config maps
       - k8s/postgres/postgres-config-map.yaml
-      - k8s/minio/minio-config-map.yaml
       - k8s/upload/upload-config-map.yaml
       - k8s/stream/stream-config-map.yaml
       - k8s/frontend/frontend-config-map.yaml
 
+      # Apply stateful sets
+      - k8s/postgres/postgres-stateful-set.yaml
+      - k8s/minio/minio-stateful-set.yaml
+
       # Apply deployments
-      - k8s/postgres/postgres-deployment.yaml
-      - k8s/minio/minio-deployment.yaml
       - k8s/memcached/memcached-deployment.yaml
       - k8s/upload/upload-deployment.yaml
       - k8s/stream/stream-deployment.yaml

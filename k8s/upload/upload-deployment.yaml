@@ -15,7 +15,7 @@ spec:
       annotations:
         prometheus.io/scrape: "true"
         prometheus.io/path: /metrics
-        prometheus.io/port: "5001"
+        prometheus.io/port: "5000"
     spec:
       # Upload depends on postgres and minio. Therefore, we need to wait for them to be ready using init containers.
       initContainers:

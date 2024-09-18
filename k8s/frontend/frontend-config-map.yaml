@@ -16,7 +16,7 @@ data:
 
         location /upload-api/ {
             client_max_body_size 7G;
-            proxy_pass http://upload-service:5001/;  # Set the correct URL for production
+            proxy_pass http://upload-service:5000/;
             proxy_set_header Host $host;
             add_header Access-Control-Allow-Origin *;
             add_header Access-Control-Allow-Methods 'GET, POST, OPTIONS';
@@ -24,7 +24,7 @@ data:
         }
 
         location /stream-api/ {
-            proxy_pass http://stream-service:5002/;  # Set the correct URL for production
+            proxy_pass http://stream-service:5001/;
             proxy_set_header Host $host;
             add_header Access-Control-Allow-Origin *;
             add_header Access-Control-Allow-Methods 'GET, POST, OPTIONS';

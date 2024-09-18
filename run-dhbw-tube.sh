@@ -45,10 +45,11 @@ fi
 echo "Installing prometheus and grafana..."
 helm install prometheus prometheus-community/prometheus \
   --namespace dhbw-tube \
+  -f k8s/prometheus/prometheus-values.yaml \
   --set server.global.scrape_interval="15s"
 helm install grafana grafana/grafana \
   --namespace dhbw-tube \
-  --set adminPassword="admin"
+  -f k8s/grafana/grafana-values.yaml
 
 # Print the URL to access the application, prometheus and grafana
 echo ""

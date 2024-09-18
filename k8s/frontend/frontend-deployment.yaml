@@ -15,16 +15,16 @@ spec:
       annotations:
         prometheus.io/scrape: "true"
         prometheus.io/path: /metrics
-        prometheus.io/port: "5000"
+        prometheus.io/port: "80"
     spec:
       # Frontend depends on upload and stream. Therefore, we need to wait for them to be ready using init containers.
       initContainers:
         - name: wait-for-upload
           image: busybox
-          command: [ 'sh', '-c', 'until nc -z upload-service 5001; do echo waiting for upload; sleep 5; done;' ]
+          command: [ 'sh', '-c', 'until nc -z upload-service 5000; do echo waiting for upload; sleep 5; done;' ]
         - name: wait-for-stream
           image: busybox
-          command: [ 'sh', '-c', 'until nc -z stream-service 5002; do echo waiting for stream; sleep 5; done;' ]
+          command: [ 'sh', '-c', 'until nc -z stream-service 5001; do echo waiting for stream; sleep 5; done;' ]
 
       containers:
         - name: frontend

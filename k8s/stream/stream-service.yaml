@@ -9,5 +9,5 @@ spec:
   type: LoadBalancer
   ports:
     - protocol: TCP
-      port: 5002
+      port: 5001
       targetPort: 5000

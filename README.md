@@ -154,10 +154,85 @@ You can then access Prometheus at [localhost:8888](http://localhost:8888) and Gr
 
 <br>
 
-## Kubernetes environment:
+## Kubernetes Environment
+### Overview
+- Skaffold is used to deploy the application, which enables automatic recovery of resources in the event of failures. 
+- Most resources are defined in Kubernetes configuration files and are installed with kubectl.
+- Prometheus and Grafana are installed via Helm.
 
+In the following sections, the Kubernetes resources used in the DHBW-Tube application are described in detail.
+
+<p style="margin-top: 40px"></p>
+
+### Postgres
+A PostgresSQL database server is used to store the metadata of the uploaded files. The following resources are used for this:
+StatefulSet: Used for Postgres to ensure that each instance has a stable network ID and stable storage. This is particularly important for databases that require consistent data storage and identity.
+Headless Service: Used in combination with StatefulSets to provide direct addressing to the pods without using a load balancer. This is important for database replication and partitioning.
+ConfigMap: Contains configuration data for the Postgres server.
+PersistentVolumeClaim: Provides persistent storage for the Postgres database to prevent data loss on pod restarts.
+
+### MinIO
+A MinIO database server is used to store the files that users upload.
+StatefulSet: Used to run MinIO with stable network IDs and persistent storage. This is important for file storage management as MinIO requires consistent identity and access to data.
+Headless Service: In combination with the StatefulSet, this allows MinIO to address its instances directly. This is important for managing and scaling the storage instances.
+PersistentVolumeClaim: Secures the storage space for the MinIO data and ensures continuous availability of the uploaded files.
+
+### Upload Microservice
+The upload microservice was developed in Python and provides Flask APIs. This microservice enables the storage of videos, images and metadata.
+Deployment: Responsible for the deployment and scaling of the upload pods.
+Service (load balancer): Ensures that the upload service is accessible from the outside and optimizes the distribution of incoming REST API requests sent from the frontend.
+ConfigMap: Contains configuration data for the upload service.
+
+### Stream Microservice
+The Stream microservice was developed in Python and provides Flask APIs. The microservice can be used to stream videos and images and retrieve metadata.
+Deployment: Responsible for the provision and scaling of the stream pods.
+Service (load balancer): Enables access to the stream service from the outside and optimizes the distribution of incoming REST API requests sent from the frontend.
+ConfigMap: Contains configuration data for the stream service.
+
+### Memcached
+A memcached is used to cache the video metadata. The reduced database requests are intended to ensure the performance of the application. The cache is currently only used in the stream microservice for metadata requests, as the MinIO database is already optimized for file streaming.
+Deployment: Responsible for the provisioning and scaling of the Memcached pods.
+Service: Provides the Memcached service, which is used by other components to cache metadata.
+
+### Frontend
+The frontend was developed as a single page web application with the Quasar (Vue) framework. The build files are located on an nginx server, which coordinates the outgoing HTTP requests. Users can operate the application via the user interface.
+Deployment: Manages the deployment and scaling of the front-end pods.
+Service (load balancer): Enables external access to the user interface and optimizes the distribution of user requests.
+ConfigMap: Contains configuration data for the frontend server (nginx configuration).
+
+### Prometheus
+A Prometheus integration is used to collect data about the status of Kubernetes resources. Accordingly, the Deployment-/StatefulSet resources have the necessary Prometheus annotations. Prometheus is installed with the following configuration files, resources and helm:
+PersistentVolume: Required to persist Prometheus data and ensure no data is lost on pod restarts.
+PersistentVolumeClaims: Ensures that the necessary storage space is provided for the Prometheus data.
+Helm Values: Configuration files used when installing Prometheus via Helm to make specific settings and customizations.
+
+### Grafana
+A Grafana integration is used to visualize the Prometheus data in dashboards. Prometheus is installed with the following Kubernetes resources and Helm:
+PersistentVolume: Used to permanently store Grafana data and ensure that dashboards and configurations are not lost.
+PersistentVolumeClaims: Provides the required storage space for Grafana.
+Helm Values: Configuration files that are used when installing Grafana via Helm to make specific settings and customizations.
 
 ### Kubernetes Secrets
-Kubernetes Secrets are objects used to store sensitive information such as passwords, tokens, and keys, which are essential for the secure operation of applications within a Kubernetes cluster. By using Secrets, Kubernetes allows for the separation of sensitive data from application code and configuration files, reducing the risk of accidental exposure and unauthorized access.
+Kubernetes Secrets are objects used to store sensitive information such as passwords, tokens, and keys, which are essential for the secure operation of applications within a Kubernetes cluster.
+By using Secrets, Kubernetes allows for the separation of sensitive data from application code and configuration files, reducing the risk of accidental exposure and unauthorized access.
 
-It is considered best practice not to store Secrets YAML files in a repository to ensure security. Instead, these files should be stored and managed locally or in a secure secret management system such as HashiCorp Vault, AWS Secrets Manager, or Azure Key Vault. However, since this is a sample application for an academic project and not a production system, this approach has been bypassed, and the Kubernetes Secret files are included in the repository.
+It is considered best practice not to store Secrets YAML files in a repository to ensure security. 
+Instead, these files should be stored and managed locally or in a secure secret management system such as HashiCorp Vault, AWS Secrets Manager, or Azure Key Vault. 
+However, since this is a sample application for an academic project and not a production system, this approach has been bypassed, and the Kubernetes Secret files are included in the repository.
+- Postgres
+- MinIO
+- Grafana
+
+<p style="margin-top: 40px"></p>
+
+### Summary
+The Kubernetes environment uses a combination of StatefulSets for stateful services such as databases and storage, and deployments for stateless microservices.
+Headless services are used in conjunction with StatefulSets to ensure direct and consistent network identity.
+Prometheus and Grafana are used to monitor and visualize system status, while Secrets are used to protect sensitive data.
+
+The following image shows the rough concept and the communication between the Kubernetes resources.
+The user can access the front end of the DHBW-Tube application, the REST APIs of the Upload and Stream microservices and the Prometheus and Grafana user interfaces.
+The frontend uses the interfaces of the Upload and Stream microservices, which in turn have connections to the PostgreSql and MinIO databases.
+The Stream microservice also uses Memcached.
+Grafana accesses the data from Prometheus and Prometheus scrapes data from the pods. 
+![Concept image](assets/concept.png)

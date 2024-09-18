@@ -4,6 +4,7 @@ metadata:
   name: postgres-service
   namespace: dhbw-tube
 spec:
+  clusterIP: None
   selector:
     app: postgres-app
   ports:

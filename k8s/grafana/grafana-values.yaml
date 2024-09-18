@@ -1,0 +1,12 @@
+admin:
+  existingSecret: grafana-secret
+  userKey: admin-user
+  passwordKey: admin-password
+
+persistence:
+  enabled: true
+  existingClaim: pvc-grafana
+  size: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: ""
