@@ -5,7 +5,8 @@ DHBW-Tube is a cross-location web video platform for the exchange of user-genera
 Users can search, view, and upload video clips on the portal for free.
 Lecturers can upload lecture recordings, which can then be viewed by students who are absent due to illness or for exam preparation.
 On the other hand, students have the opportunity to record their own learning videos on lecture content and share them with their fellow students.
-This way, students from different disciplines and DHBW locations can exchange knowledge across campuses.
+The video description enables the video creators to add further information, provide suitable exercises and give further tips for successful learning. 
+With DHBW-Tube, students from different disciplines and DHBW locations can exchange knowledge across campuses.
 The videos can be streamed ad-free from various devices via the web browser on the decentralized platform and remain available for subsequent semesters.
 The application was developed with the aim of minimizing data and does not require time-consuming registration to upload content.
 
