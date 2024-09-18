@@ -4,6 +4,4 @@ metadata:
   name: postgres-config-map
   namespace: dhbw-tube
 data:
-  POSTGRES_USER: "postgres"
-  POSTGRES_PASSWORD: "password"
   POSTGRES_DB: "videos"

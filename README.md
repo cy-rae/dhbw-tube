@@ -155,3 +155,9 @@ You can then access Prometheus at [localhost:8888](http://localhost:8888) and Gr
 <br>
 
 ## Kubernetes environment:
+
+
+### Kubernetes Secrets
+Kubernetes Secrets are objects used to store sensitive information such as passwords, tokens, and keys, which are essential for the secure operation of applications within a Kubernetes cluster. By using Secrets, Kubernetes allows for the separation of sensitive data from application code and configuration files, reducing the risk of accidental exposure and unauthorized access.
+
+It is considered best practice not to store Secrets YAML files in a repository to ensure security. Instead, these files should be stored and managed locally or in a secure secret management system such as HashiCorp Vault, AWS Secrets Manager, or Azure Key Vault. However, since this is a sample application for an academic project and not a production system, this approach has been bypassed, and the Kubernetes Secret files are included in the repository.

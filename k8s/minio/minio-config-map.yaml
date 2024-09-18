@@ -4,5 +4,4 @@ metadata:
   name: minio-config-map
   namespace: dhbw-tube
 data:
-  MINIO_ROOT_USER: "minioadmin"
-  MINIO_ROOT_PASSWORD: "minioadmin"
+  # Moved login credentials to Kubernetes secrets
