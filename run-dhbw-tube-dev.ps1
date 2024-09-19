@@ -41,4 +41,4 @@ if ($grafanaRepo) {
 
 # Create Kubernetes environment with skaffold script
 Write-Output "Creating Kubernetes environment with skaffold..."
-skaffold dev -f skaffold.yaml
+skaffold dev

@@ -21,7 +21,7 @@ fi
 
 # Create kubernetes environment with skaffold script
 echo "Creating kubernetes environment with skaffold..."
-skaffold run -f skaffold.yaml
+skaffold run
 
 # Check if prometheus is added to the helm repositories. If not add it.
 if helm repo list | grep -q "prometheus-community"; then

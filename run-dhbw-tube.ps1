@@ -21,7 +21,7 @@ if ($namespaceExists) {
 
 # Create Kubernetes environment with skaffold script
 Write-Output "Creating Kubernetes environment with skaffold..."
-skaffold run -f skaffold.yaml
+skaffold run
 
 # Check if prometheus is added to the helm repositories. If not add it.
 $prometheusRepo = helm repo list | Select-String -Pattern "prometheus-community"
