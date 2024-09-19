@@ -1,7 +1,8 @@
 #!/bin/bash
 
-# Start minikube if it is not already running
+# Start minikube if it is not already running.
 if ! minikube status &>/dev/null; then
+  # Start minikube with 6GB of memory and 2 CPUs so streaming and uploading files up to 4gb is possible.
   echo "Start minikube..."
   minikube start --memory=6100 --cpus=2
 else

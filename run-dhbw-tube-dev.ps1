@@ -1,6 +1,7 @@
 # Start minikube if it is not already running
 $minikubeStatus = minikube status --format='{{.Host}}'
 if ($minikubeStatus -ne 'Running') {
+    # Start minikube with 6GB of memory and 2 CPUs so streaming and uploading files up to 4gb is possible.
     Write-Output "Start minikube..."
     minikube start --memory=6100 --cpus=2
 } else {
