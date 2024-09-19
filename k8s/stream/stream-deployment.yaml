@@ -61,6 +61,17 @@ spec:
           ports:
             - containerPort: 5000
 
+          # Define resource requests and limits to enable streaming of videos up to 4gb.
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "1Gi"
+              ephemeral-storage: "2Gi"
+            limits:
+              cpu: "1"
+              memory: "6Gi"
+              ephemeral-storage: "6Gi"
+
           # Define liveness and readiness probes so frontend can check if upload is ready.
           livenessProbe:
             httpGet:

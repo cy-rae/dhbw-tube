@@ -58,6 +58,17 @@ spec:
           ports:
             - containerPort: 5000
 
+          # Define resource requests and limits for upload, so upload pod can handle up to 4gb file upload.
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "1Gi"
+              ephemeral-storage: "2Gi"
+            limits:
+              cpu: "1"
+              memory: "5Gi"
+              ephemeral-storage: "5Gi"
+
           # Define liveness and readiness probes so frontend can check if upload is ready.
           livenessProbe:
             httpGet:

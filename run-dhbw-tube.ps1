@@ -2,7 +2,7 @@
 $minikubeStatus = minikube status --format='{{.Host}}'
 if ($minikubeStatus -ne 'Running') {
     Write-Output "Start minikube..."
-    minikube start
+    minikube start --memory=6100 --cpus=2
 } else {
     Write-Output "Minikube is already running. Skip start..."
 }

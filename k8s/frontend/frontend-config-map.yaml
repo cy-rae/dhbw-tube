@@ -1,3 +1,5 @@
+# Define default.conf for nginx server. The REST-API calls will be redirected to the corresponding services.
+# The maximum file size for uploads is set to 5GB, so the user can upload a 4GB video + metadata & 10MB cover image.
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -15,7 +17,7 @@ data:
         }
 
         location /upload-api/ {
-            client_max_body_size 7G;
+            client_max_body_size 5G;
             proxy_pass http://upload-service:5000/;
             proxy_set_header Host $host;
             add_header Access-Control-Allow-Origin *;

@@ -3,7 +3,7 @@
 # Start minikube if it is not already running
 if ! minikube status &>/dev/null; then
   echo "Start minikube..."
-  minikube start
+  minikube start --memory=6100 --cpus=2
 else
   echo "Minikube is already running. Skip start..."
 fi
