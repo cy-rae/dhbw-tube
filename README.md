@@ -1,6 +1,5 @@
 # DHBW Tube
 
-## Application Description
 DHBW-Tube is a cross-location web video platform for the exchange of user-generated content for students and employees of the Baden-Württemberg Cooperative State University.
 Users can search, view, and upload video clips on the portal for free.
 Lecturers can upload lecture recordings, which can then be viewed by students who are absent due to illness or for exam preparation.
