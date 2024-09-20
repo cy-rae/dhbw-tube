@@ -239,3 +239,16 @@ The frontend uses the REST-APIs of the upload and stream microservices, which in
 The stream microservice also uses Memcached.
 Grafana accesses the data from Prometheus and Prometheus scrapes data from the pods. 
 ![Concept image](assets/concept.png)
+
+<br>
+
+## Preview
+In the following you can see some screenshots of the DHBW-Tube application.
+### Upload Page
+![Upload page image](assets/upload-page.png)
+
+### Search Page
+![Search page image](assets/search-page.png)
+
+### Stream Page
+![Stream page image](assets/stream-page.png)
