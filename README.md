@@ -46,6 +46,7 @@ Docker is used to build and manage container images. Install [Docker Desktop](ht
 Make sure all the above components are correctly installed and available in your system path to successfully start and develop the application. 
 To ensure that all resources are deployed correctly—including pod replicas during scaling—it is recommended to allocate at least 20 GB of memory and 8 CPUs to Docker. 
 You can adjust these settings in Docker Desktop preferences under Settings > Resources (CPU limit and Memory limit), as shown in the image below:
+
 ![Docker Desktop settings image](assets/docker-settings.png)
 
 <br>
@@ -84,6 +85,7 @@ kubectl get vpa -n dhbw-tube
 <p style="margin-top: 40px"></p>
 
 If the HPAs do not display any metric values as shown in the image below, it could be because the metric server does not accept the (insecure) certificates.
+
 ![HPA metric error image](assets/hpa-error.png)
 
 Since this is a local development environment, we can ignore the certificate errors by accepting the insecure certificates.
@@ -145,6 +147,7 @@ This command sets up a tunnel that allows access to services within the Minikube
 <p style="margin-top: 40px"></p>
 
 If the HPAs do not display any metric values as shown in the image below, it could be because the metric server does not accept the (insecure) certificates.
+
 ![HPA metric error image](assets/hpa-error.png)
 
 Since this is a local development environment, we can ignore the certificate errors by accepting the insecure certificates.
