@@ -1,0 +1,21 @@
+apiVersion: autoscaling.k8s.io/v1
+kind: VerticalPodAutoscaler
+metadata:
+  name: postgres-vpa
+  namespace: dhbw-tube
+spec:
+  targetRef:
+    apiVersion: apps/v1
+    kind: StatefulSet
+    name: postgres-stateful-set
+  updatePolicy:
+    updateMode: "Auto"
+  resourcePolicy:
+    containerPolicies:
+      - containerName: postgres
+        minAllowed:         # Set the value slightly below the initial requests to avoid undersizing but still allow flexibility.
+          cpu: "100m"
+          memory: "100Mi"
+        maxAllowed:
+          cpu: "500m"
+          memory: "500Mi"

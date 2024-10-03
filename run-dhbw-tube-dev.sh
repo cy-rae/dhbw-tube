@@ -4,7 +4,7 @@
 if ! minikube status &>/dev/null; then
   # Start minikube with 6GB of memory and 2 CPUs so streaming and uploading files up to 4gb is possible.
   echo "Start minikube..."
-  minikube start --memory=6100 --cpus=2
+  minikube start --memory=20480 --cpus=8
 else
   echo "Minikube is already running. Skip start..."
 fi
@@ -37,6 +37,11 @@ else
   helm repo add grafana https://grafana.github.io/helm-charts
   helm repo update
 fi
+
+# Apply vertical pod autoscalers (HPA is applied by default)
+echo "Applying vertical autoscalers..."
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/autoscaler/vpa-release-1.0/vertical-pod-autoscaler/deploy/vpa-v1-crd-gen.yaml
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/autoscaler/vpa-release-1.0/vertical-pod-autoscaler/deploy/vpa-rbac.yaml
 
 # Create kubernetes environment with skaffold script
 echo "Creating kubernetes environment with skaffold..."

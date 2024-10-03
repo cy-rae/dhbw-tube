@@ -20,6 +20,11 @@ if kubectl get namespace dhbw-tube &>/dev/null; then
   done
 fi
 
+# Apply vertical pod autoscalers (HPA is applied by default)
+echo "Applying vertical autoscalers..."
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/autoscaler/vpa-release-1.0/vertical-pod-autoscaler/deploy/vpa-v1-crd-gen.yaml
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/autoscaler/vpa-release-1.0/vertical-pod-autoscaler/deploy/vpa-rbac.yaml
+
 # Create kubernetes environment with skaffold script
 echo "Creating kubernetes environment with skaffold..."
 skaffold run

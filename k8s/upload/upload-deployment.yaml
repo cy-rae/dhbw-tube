@@ -61,9 +61,9 @@ spec:
           # Define resource requests and limits for upload, so upload pod can handle up to 4gb file upload.
           resources:
             requests:
-              cpu: "100m"
-              memory: "1Gi"
-              ephemeral-storage: "2Gi"
+              cpu: "500m"
+              memory: "500Mi"
+              ephemeral-storage: "1Gi"
             limits:
               cpu: "1"
               memory: "5Gi"

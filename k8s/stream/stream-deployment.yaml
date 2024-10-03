@@ -64,13 +64,13 @@ spec:
           # Define resource requests and limits to enable streaming of videos up to 4gb.
           resources:
             requests:
-              cpu: "100m"
-              memory: "1Gi"
-              ephemeral-storage: "2Gi"
+              cpu: "500m"
+              memory: "500Mi"
+              ephemeral-storage: "1Gi"
             limits:
               cpu: "1"
-              memory: "6Gi"
-              ephemeral-storage: "6Gi"
+              memory: "5Gi"
+              ephemeral-storage: "5Gi"
 
           # Define liveness and readiness probes so frontend can check if upload is ready.
           livenessProbe:

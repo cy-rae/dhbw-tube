@@ -62,3 +62,15 @@ deploy:
       - k8s/upload/upload-service.yaml
       - k8s/stream/stream-service.yaml
       - k8s/frontend/frontend-service.yaml
+
+      # Apply metrics server for autoscaling
+      - https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+
+      # Apply horizontal pod autoscalers
+      - k8s/upload/upload-hpa.yaml
+      - k8s/stream/stream-hpa.yaml
+      - k8s/frontend/frontend-hpa.yaml
+
+      # Apply vertical pod autoscalers
+      - k8s/postgres/postgres-vpa.yaml
+      - k8s/minio/minio-vpa.yaml

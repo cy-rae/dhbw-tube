@@ -43,20 +43,18 @@ Skaffold is used to automate development and deployment cycles in Kubernetes. In
 Helm is a package manager for Kubernetes that makes it easier to manage applications. Install [Helm](https://helm.sh/docs/intro/install/) according to the official instructions.
 - **Docker Desktop**:
 Docker is used to build and manage container images. Install [Docker Desktop](https://www.docker.com/products/docker-desktop/) according to the official instructions.
-Make sure all the above components are correctly installed and available in your system path to successfully start and develop the application.
+Make sure all the above components are correctly installed and available in your system path to successfully start and develop the application. 
+To ensure that all resources are deployed correctly—including pod replicas during scaling—it is recommended to allocate at least 20 GB of memory and 8 CPUs to Docker. 
+You can adjust these settings in Docker Desktop preferences under Settings > Resources (CPU limit and Memory limit), as shown in the image below:
+![Docker Desktop settings image](assets/docker-settings.png)
 
 <br>
 
 ## Starting the Application
 To start the application, open Docker Desktop and make sure the Docker Engine is running. 
-Then, execute one of the following commands:
-#### On MacOS / Linux:
+Then, execute the following bash script:
 ```bash
 bash run-dhbw-tube.sh
-```
-#### On Windows:
-```shell
-powershell -File run-dhbw-tube.ps1
 ```
 
 <p style="margin-top: 40px"></p>
@@ -64,17 +62,39 @@ powershell -File run-dhbw-tube.ps1
 These commands each execute a script that automates the setup of a Kubernetes environment using Minikube, Skaffold, and Helm. The script performs the following steps:
 1. **Start Minikube**: The script checks if Minikube is already running. If Minikube is not running, Minikube will be started.
 2. **Delete Namespace**: If the **dhbw-tube** namespace already exists in the kubernetes node, it will be deleted. The script waits until the namespace is completely removed to ensure a clean environment.
-3. **Create Kubernetes Environment**: The script uses **skaffold** to create the Kubernetes environment according to the configuration in the **skaffold.yaml** file.
-4. **Add Prometheus Helm Repository**: The script checks if the **Prometheus Helm Repository** has already been added. If not, it adds the repository and updates the Helm repositories.
-5. **Add Grafana Helm Repository**: The script checks if the **Grafana Helm Repository** has already been added. If not, it adds the repository and updates the Helm repositories.
-6. **Install Prometheus and Grafana**: The script installs Prometheus and Grafana in the **dhbw-tube** namespace with the specified configurations.
-7. **Start Minikube Tunnel**: The script starts the Minikube tunnel to allow access to the services in Minikube. You may need to enter your admin password to start the tunnel.
+3. **Apply vertical pod autoscaler**: The script applies the vertical pod autoscaler to the Minikube cluster. The vertical pod autoscaler automatically adjusts the resource requests of the pods in the cluster based on their usage. (Horizontal pod autoscaling is applied by default.)
+4. **Create Kubernetes Environment**: The script uses **skaffold** to create the Kubernetes environment according to the configuration in the **skaffold.yaml** file.
+5. **Add Prometheus Helm Repository**: The script checks if the **Prometheus Helm Repository** has already been added. If not, it adds the repository and updates the Helm repositories.
+6. **Add Grafana Helm Repository**: The script checks if the **Grafana Helm Repository** has already been added. If not, it adds the repository and updates the Helm repositories.
+7. **Install Prometheus and Grafana**: The script installs Prometheus and Grafana in the **dhbw-tube** namespace with the specified configurations.
+8. **Start Minikube Tunnel**: The script starts the Minikube tunnel to allow access to the services in Minikube. You may need to enter your admin password to start the tunnel.
 
 As soon as all resources have been successfully deployed, the application can be accessed via [localhost](http://localhost).
 
 To ensure that all resources are fully deployed, you can check the status of the resources with the following command:
 ```
 kubectl get all -n dhbw-tube
+```
+
+The vertical pod autoscaler will not be shown in the output of the above command. To check the status of the vertical pod autoscaler, you can use the following command:
+```
+kubectl get vpa -n dhbw-tube
+```
+
+<p style="margin-top: 40px"></p>
+
+If the HPAs do not display any metric values as shown in the image below, it could be because the metric server does not accept the (insecure) certificates.
+![HPA metric error image](assets/hpa-error.png)
+
+Since this is a local development environment, we can ignore the certificate errors by accepting the insecure certificates.
+The problem can be solved with the following command:
+```
+kubectl patch deployment metrics-server -n kube-system --type='json' -p='[{"op": "add", "path": "/spec/template/spec/containers/0/args/-", "value": "--kubelet-insecure-tls"}]'
+```
+
+You have to wait a moment until the metric api is available. You can check the status with the following command:
+```
+kubectl top nodes 
 ```
 
 <p style="margin-top: 40px"></p>
@@ -94,14 +114,9 @@ You can then access Prometheus at [localhost:8888](http://localhost:8888) and Gr
 
 ## Starting the Application in Development Mode
 To start the application in development mode, open Docker Desktop and make sure the Docker Engine is running. 
-Then, execute one of the following commands:
-#### On MacOS / Linux:
+Then, execute the following bash script:
 ```bash
 bash run-dhbw-tube-dev.sh
-```
-#### On Windows:
-```shell
-powershell -File run-k8s-dev.ps1
 ```
 
 <p style="margin-top: 40px"></p>
@@ -115,7 +130,9 @@ If the **dhbw-tube** namespace already exists, it will be deleted. The script wa
 The script checks if the **Prometheus Helm Repository** has already been added. If not, it adds the repository and updates the Helm repositories.
 4. **Add Grafana Helm Repository**:
 The script checks if the **Grafana Helm Repository** has already been added. If not, it adds the repository and updates the Helm repositories.
-5. **Create Kubernetes Environment**:
+5. **Apply vertical pod autoscaler**:
+The script applies the vertical pod autoscaler to the Minikube cluster. The vertical pod autoscaler automatically adjusts the resource requests of the pods in the cluster based on their usage. (Horizontal pod autoscaling is applied by default.)
+6. **Create Kubernetes Environment**:
 The script uses Skaffold to create the Kubernetes environment according to the configuration in the **skaffold.yaml** file.
 
 The script executes the command `skaffold dev`, which fills the terminal with log and status messages for the duration of the development process.
@@ -124,6 +141,22 @@ In addition, skaffold dev responds to changes in the source code and updates the
 
 To access the application via [localhost](http://localhost), the command `minikube tunnel` must be executed in addition.
 This command sets up a tunnel that allows access to services within the Minikube environment.
+
+<p style="margin-top: 40px"></p>
+
+If the HPAs do not display any metric values as shown in the image below, it could be because the metric server does not accept the (insecure) certificates.
+![HPA metric error image](assets/hpa-error.png)
+
+Since this is a local development environment, we can ignore the certificate errors by accepting the insecure certificates.
+The problem can be solved with the following command:
+```
+kubectl patch deployment metrics-server -n kube-system --type='json' -p='[{"op": "add", "path": "/spec/template/spec/containers/0/args/-", "value": "--kubelet-insecure-tls"}]'
+```
+
+You have to wait a moment until the metric api is available. You can check the status with the following command:
+```
+kubectl top nodes 
+```
 
 <p style="margin-top: 40px"></p>
 
@@ -159,6 +192,7 @@ You can then access Prometheus at [localhost:8888](http://localhost:8888) and Gr
 - Skaffold is used to deploy the application, which enables automatic recovery of resources in the event of failures. 
 - Most resources are defined in Kubernetes configuration files and are installed with kubectl.
 - Prometheus and Grafana are installed via Helm.
+- A metric server is being used to provide metrics for the horizontal and vertical pod autoscalers.
 
 In the following sections, the Kubernetes resources used in the DHBW-Tube application are described in detail.
 
@@ -170,24 +204,28 @@ A PostgreSQL database server is used to store the metadata of the uploaded files
 - Headless Service: Used in combination with StatefulSets to provide direct addressing to the pods without using a load balancer. This is important for database replication and partitioning.
 - ConfigMap: Contains configuration data for the PostgreSQL server.
 - PersistentVolumeClaim: Provides persistent storage for the PostgreSQL database to prevent data loss on pod restarts.
+- Vertical Pod Autoscaler: Automatically adjusts the resource requests of the PostgreSQL pods based on their usage. This is important for optimizing the performance of the database.
 
 ### MinIO
 A MinIO database server is used to store the files that users upload.
 - StatefulSet: Used to run MinIO with stable network IDs and persistent storage. This is important for file storage management as MinIO requires consistent identity and access to data.
 - Headless Service: In combination with the StatefulSet, this allows MinIO to address its instances directly. This is important for managing and scaling the storage instances.
 - PersistentVolumeClaim: Secures the storage space for the MinIO data and ensures continuous availability of the uploaded files.
+- Vertical Pod Autoscaler: Automatically adjusts the resource requests of the PostgreSQL pods based on their usage. This is important for optimizing the performance of the database.
 
 ### Upload Microservice
 The upload microservice was developed in Python with the Flask web framework. This microservice provides REST-APIs to store videos, images and metadata.
 - Deployment: Responsible for the deployment and scaling of the upload pods.
 - Service (load balancer): Ensures that the upload service is accessible from the outside and optimizes the distribution of incoming REST-API requests sent from the frontend.
 - ConfigMap: Contains configuration data for the upload service.
+- Horizontal Pod Autoscaler: Automatically adjusts the number of upload pods based on the incoming requests. This is important for optimizing the performance of the application.
 
 ### Stream Microservice
 The stream microservice was developed in Python with the Flask web framework. The microservice can be used to stream videos and images and retrieve metadata.
 - Deployment: Responsible for the provision and scaling of the stream pods.
 - Service (load balancer): Enables access to the stream service from the outside and optimizes the distribution of incoming REST API requests sent from the frontend.
 - ConfigMap: Contains configuration data for the stream service.
+- Horizontal Pod Autoscaler: Automatically adjusts the number of stream pods based on the incoming requests. This is important for optimizing the performance of the application.
 
 ### Memcached
 A memcached is used to cache the video metadata. The reduced database requests are intended to ensure the performance of the application. The cache is currently only used in the stream microservice for metadata requests, as the MinIO database is already optimized for file streaming.
@@ -199,6 +237,7 @@ The frontend was developed as a single page web application with the Quasar (Vue
 - Deployment: Manages the deployment and scaling of the frontend pods.
 - Service (load balancer): Enables external access to the user interface and optimizes the distribution of user requests.
 - ConfigMap: Contains configuration data for the frontend server (nginx configuration).
+- Horizontal Pod Autoscaler: Automatically adjusts the number of frontend pods based on incoming requests. This is important for optimizing the performance of the application.
 
 ### Prometheus
 A Prometheus integration is used to collect data about the status of Kubernetes resources. Accordingly, the Deployments and StatefulSets have the necessary Prometheus annotations. Prometheus is installed with the following configuration files, resources and helm:
@@ -239,6 +278,17 @@ The frontend uses the REST-APIs of the upload and stream microservices, which in
 The stream microservice also uses Memcached.
 Grafana accesses the data from Prometheus and Prometheus scrapes data from the pods. 
 ![Concept image](assets/concept.png)
+
+<br>
+
+## Scaling
+The DHBW-Tube application is designed to scale critical resources both horizontally and vertically.
+The database pods (PostgreSQL and MinIO) are scaled vertically by the Vertical Pod Autoscalers (VPAs) based on their usage, ensuring optimal resource allocation for the database servers.
+In contrast, the frontend, upload, and stream pods are scaled horizontally. 
+The Horizontal Pod Autoscalers (HPAs) automatically create additional pod replicas when specific threshold values are reached, allowing the application to handle a large number of users and requests effectively.
+
+Since this is a local development environment, resource requests and limits are configured to enable minikube to test a scalable Kubernetes setup.
+These values should be adjusted accordingly for a production environment.
 
 <br>
 

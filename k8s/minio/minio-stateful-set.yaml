@@ -42,6 +42,14 @@ spec:
             - name: minio-data
               mountPath: /data
 
+          resources:
+            requests:           # Define initial resource requests for the container. They will be adjusted by the VPA.
+              cpu: "500m"
+              memory: "1Gi"
+            limits:
+              cpu: "1"
+              memory: "10Gi"
+
           # Define liveness and readiness probes so upload and stream can check if upload is ready.
           livenessProbe:
             exec:
