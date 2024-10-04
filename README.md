@@ -43,9 +43,9 @@ Skaffold is used to automate development and deployment cycles in Kubernetes. In
 Helm is a package manager for Kubernetes that makes it easier to manage applications. Install [Helm](https://helm.sh/docs/intro/install/) according to the official instructions.
 - **Docker Desktop**:
 Docker is used to build and manage container images. Install [Docker Desktop](https://www.docker.com/products/docker-desktop/) according to the official instructions.
-Make sure all the above components are correctly installed and available in your system path to successfully start and develop the application. 
-To ensure that all resources are deployed correctly—including pod replicas during scaling—it is recommended to allocate at least 20 GB of memory and 8 CPUs to Docker. 
-You can adjust these settings in Docker Desktop preferences under Settings > Resources (CPU limit and Memory limit), as shown in the image below:
+Make sure that all of the above components are correctly installed and available in your system path to successfully launch and develop the application. 
+To ensure that all resources are deployed correctly — including pod replicas during scaling — it is recommended that Docker is allocated at least 20GB of memory and 8 CPUs.  
+You can adjust these settings in the Docker Desktop Preferences under `Settings` > `Resources` (CPU limit and Memory limit), as shown in the image below:
 
 ![Docker Desktop settings image](assets/docker-settings.png)
 
@@ -63,7 +63,7 @@ bash run-dhbw-tube.sh
 These commands each execute a script that automates the setup of a Kubernetes environment using Minikube, Skaffold, and Helm. The script performs the following steps:
 1. **Start Minikube**: The script checks if Minikube is already running. If Minikube is not running, Minikube will be started.
 2. **Delete Namespace**: If the **dhbw-tube** namespace already exists in the kubernetes node, it will be deleted. The script waits until the namespace is completely removed to ensure a clean environment.
-3. **Apply vertical pod autoscaler**: The script applies the vertical pod autoscaler to the Minikube cluster. The vertical pod autoscaler automatically adjusts the resource requests of the pods in the cluster based on their usage. (Horizontal pod autoscaling is applied by default.)
+3. **Apply vertical pod autoscaler**: The script applies the vertical pod autoscaler to the Minikube cluster. Vertical pod autoscaling automatically adjusts the resource requirements of the pods in the cluster based on their usage. (Horizontal pod autoscaling is applied by default.)
 4. **Create Kubernetes Environment**: The script uses **skaffold** to create the Kubernetes environment according to the configuration in the `skaffold.yaml` file.
 5. **Add Prometheus Helm Repository**: The script checks if the **Prometheus Helm Repository** has already been added. If not, it adds the repository and updates the Helm repositories.
 6. **Add Grafana Helm Repository**: The script checks if the **Grafana Helm Repository** has already been added. If not, it adds the repository and updates the Helm repositories.
@@ -84,7 +84,7 @@ kubectl get vpa -n dhbw-tube
 
 <p style="margin-top: 40px"></p>
 
-If the HPAs do not display any metric values as shown in the image below, it could be because the metric server does not accept the (insecure) certificates.
+If the HPAs do not display metric values, as shown in the image below, this could be because the metric server is not accepting the (insecure) certificates.
 
 ![HPA metric error image](assets/hpa-error.png)
 
@@ -94,7 +94,7 @@ The problem can be solved with the following command:
 kubectl patch deployment metrics-server -n kube-system --type='json' -p='[{"op": "add", "path": "/spec/template/spec/containers/0/args/-", "value": "--kubelet-insecure-tls"}]'
 ```
 
-You have to wait a moment until the metric api is available. You can check the status with the following command:
+You will need to wait a moment for the metric API to become available. You can check the status with the following command:
 ```
 kubectl top nodes 
 ```
@@ -133,7 +133,7 @@ The script checks if the **Prometheus Helm Repository** has already been added. 
 4. **Add Grafana Helm Repository**:
 The script checks if the **Grafana Helm Repository** has already been added. If not, it adds the repository and updates the Helm repositories.
 5. **Apply vertical pod autoscaler**:
-The script applies the vertical pod autoscaler to the Minikube cluster. The vertical pod autoscaler automatically adjusts the resource requests of the pods in the cluster based on their usage. (Horizontal pod autoscaling is applied by default.)
+The script applies the vertical pod autoscaler to the Minikube cluster. Vertical pod autoscaling automatically adjusts the resource requirements of the pods in the cluster based on their usage. (Horizontal pod autoscaling is applied by default.)
 6. **Create Kubernetes Environment**:
 The script uses Skaffold to create the Kubernetes environment according to the configuration in the `skaffold.yaml` file.
 
@@ -146,7 +146,7 @@ This command sets up a tunnel that allows access to services within the Minikube
 
 <p style="margin-top: 40px"></p>
 
-If the HPAs do not display any metric values as shown in the image below, it could be because the metric server does not accept the (insecure) certificates.
+If the HPAs do not display metric values, as shown in the image below, this could be because the metric server is not accepting the (insecure) certificates.
 
 ![HPA metric error image](assets/hpa-error.png)
 
@@ -156,7 +156,7 @@ The problem can be solved with the following command:
 kubectl patch deployment metrics-server -n kube-system --type='json' -p='[{"op": "add", "path": "/spec/template/spec/containers/0/args/-", "value": "--kubelet-insecure-tls"}]'
 ```
 
-You have to wait a moment until the metric api is available. You can check the status with the following command:
+You will need to wait a moment for the metric API to become available. You can check the status with the following command:
 ```bash
 kubectl top nodes 
 ```
@@ -236,7 +236,7 @@ Memcached is used to cache the video metadata. The reduced database requests are
 - Service: Provides the Memcached service, which is used by other components to cache metadata.
 
 ### Frontend
-The frontend was developed as a single page web application with the Quasar (Vue.js) framework. The build files are located on an nginx server, which coordinates the outgoing HTTP requests. This interface allows users to interact with the DHBW-Tube application.
+The frontend was developed as a single page web application with the Quasar (Vue.js) framework. The build files are located on a nginx server, which coordinates the outgoing HTTP requests. This interface allows users to interact with the DHBW-Tube application.
 - Deployment: Manages the deployment and scaling of the frontend pods.
 - Service (load balancer): Enables external access to the user interface and optimizes the distribution of user requests.
 - ConfigMap: Contains configuration data for the frontend server (nginx configuration).
@@ -286,11 +286,11 @@ Grafana accesses the data from Prometheus and Prometheus scrapes data from the p
 
 ## Scaling
 The DHBW-Tube application is designed to scale critical resources both horizontally and vertically.
-The database pods (PostgreSQL and MinIO) are scaled vertically by the Vertical Pod Autoscalers (VPAs) based on their usage, ensuring optimal resource allocation for the database servers.
-In contrast, the frontend, upload, and stream pods are scaled horizontally. 
-The Horizontal Pod Autoscalers (HPAs) automatically create additional pod replicas when specific threshold values are reached, allowing the application to handle a large number of users and requests effectively.
+The database pods (PostgreSQL and MinIO) are scaled vertically by the **Vertical Pod Autoscalers (VPAs)** based on usage, ensuring optimal resource allocation to the database servers.
+In contrast, the `frontend`, `upload`, and `stream` pods are scaled horizontally. 
+The **Horizontal Pod Autoscalers (HPAs)** automatically create additional pod replicas when specific threshold values are reached, allowing the application to handle a large number of users and requests effectively.
 
-Since this is a local development environment, resource requests and limits are configured to enable minikube to test a scalable Kubernetes setup.
+As this is a local development environment, the resource requirements and limits are configured to allow minikube to test a scalable Kubernetes setup.
 These values should be adjusted accordingly for a production environment.
 
 <br>
