@@ -90,12 +90,12 @@ If the HPAs do not display metric values, as shown in the image below, this coul
 
 Since this is a local development environment, we can ignore the certificate errors by accepting the insecure certificates.
 The problem can be solved with the following command:
-```
+```bash
 kubectl patch deployment metrics-server -n kube-system --type='json' -p='[{"op": "add", "path": "/spec/template/spec/containers/0/args/-", "value": "--kubelet-insecure-tls"}]'
 ```
 
 You will need to wait a moment for the metric API to become available. You can check the status with the following command:
-```
+```bash
 kubectl top nodes 
 ```
 
