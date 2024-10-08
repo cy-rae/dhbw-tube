@@ -1,5 +1,4 @@
 # DHBW Tube
-
 DHBW-Tube is a cross-location web video platform for the exchange of user-generated content for students and employees of the Baden-Wuerttemberg Cooperative State University.
 Users can search, view, and upload video clips on the portal for free.
 Lecturers can upload lecture recordings, which can then be viewed by students who are absent due to illness or for exam preparation.
@@ -8,6 +7,11 @@ The video description enables the video creators to add further information, pro
 With DHBW-Tube, students from different disciplines and DHBW locations can exchange knowledge across campuses.
 The videos can be streamed ad-free from various devices via the web browser on the decentralized platform and remain available for subsequent semesters.
 The application was developed with the aim of minimizing data and does not require time-consuming registration to upload content.
+
+- **Module**: Cloud Infrastructures and Cloud Native Applications
+- **Lecture course**: W3M20035
+- **Students**: Dario Nieddu (9980025), Jonathan Diebel (9883850)
+- **Lecturer**: Prof. Dr.-Ing. habil. Dennis Pfisterer
 
 <br>
 
